@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Grid, Button } from 'semantic-ui-react';
+import cuid from 'cuid';
+
 import EventList from '../components/EventList/EventList';
 import EventForm from '../components/EventForm';
 
-const events = [
+const eventsFromDashboard = [
   {
     id: '1',
     title: 'Trip to Tower of London',
@@ -55,23 +57,30 @@ const events = [
 ];
 
 function EventsDashboard() {
-  const [state, setState] = useState({
-    events,
-    isFormOpen: false,
-  });
+  const [events, setEvents] = useState(eventsFromDashboard);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const toggleForm = () => {
-    setState({ ...state, isFormOpen: !state.isFormOpen });
+    setIsFormOpen(!isFormOpen);
+  };
+
+  // handle create event request
+  const handleCreateEvent = (newEvent) => {
+    newEvent.id = cuid();
+    newEvent.hostPhotoURL = '/assets/user.png';
+    setEvents([...events, newEvent]);
   };
 
   return (
     <Grid>
       <Grid.Column width={10}>
-        <EventList events={state.events} />
+        <EventList events={events} />
       </Grid.Column>
       <Grid.Column width={6}>
         <Button onClick={toggleForm} positive content='Create Event' />
-        {state.isFormOpen && <EventForm onCancel={toggleForm} />}
+        {isFormOpen && (
+          <EventForm onCancel={toggleForm} onSubmit={handleCreateEvent} />
+        )}
       </Grid.Column>
     </Grid>
   );

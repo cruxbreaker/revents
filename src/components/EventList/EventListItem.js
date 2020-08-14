@@ -10,7 +10,7 @@ function EventListItem({ event }) {
           <Item>
             <Item.Image size='tiny' circular src={event.hostPhotoURL} />
             <Item.Content>
-              <Item.Header as='a'>Event Title</Item.Header>
+              <Item.Header>{event.title}</Item.Header>
               <Item.Description>
                 Hosted by <a href='/'>{event.hostedBy}</a>
               </Item.Description>
@@ -26,14 +26,15 @@ function EventListItem({ event }) {
       </Segment>
       <Segment secondary>
         <List horizontal>
-          {event.attendees.map((attendee) => (
-            <EventAttendee key={attendee.id} attendee={attendee} />
-          ))}
+          {event.attendees &&
+            event.attendees.map((attendee) => (
+              <EventAttendee key={attendee.id} attendee={attendee} />
+            ))}
         </List>
       </Segment>
       <Segment clearing>
         <span>{event.description}</span>
-        <Button as='a' color='teal' floated='right' content='View' />
+        <Button color='teal' floated='right' content='View' />
       </Segment>
     </Segment.Group>
   );
