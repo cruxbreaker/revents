@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
 
 const initialFormState = {
@@ -9,15 +9,25 @@ const initialFormState = {
   hostedBy: '',
 };
 
-function EventForm({ onSubmit, onCancel }) {
+function EventForm({ createEvent, onCancel, updateEvent, selectedEvent }) {
   const [state, setState] = useState(initialFormState);
 
+  useEffect(() => {
+    if (selectedEvent) setState({ ...selectedEvent });
+  }, [selectedEvent]);
+
+  // handle form fields change
   const handleChange = ({ target: { name, value } }) =>
     setState({ ...state, [name]: value });
 
+  // handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(state);
+    if (state.id) {
+      updateEvent(state);
+    } else {
+      createEvent(state);
+    }
     setState(initialFormState);
   };
 
