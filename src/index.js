@@ -1,19 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import * as serviceWorker from './serviceWorker';
+import { BrowserRouter } from 'react-router-dom';
+
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
 const rootEle = document.getElementById('root');
 
 let render = () => {
-    ReactDOM.render(<App />, rootEle);
-}
+  ReactDOM.render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+    rootEle
+  );
+};
 
-if(module.hot) {
-    module.hot.accept('./App', () => {
-        setTimeout(render);
-    })
+if (module.hot) {
+  module.hot.accept('./App', () => {
+    setTimeout(render);
+  });
 }
 
 render();
