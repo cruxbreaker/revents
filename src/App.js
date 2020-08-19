@@ -24,7 +24,7 @@ function App() {
           <>
             <Navbar />
             <Container className='main'>
-              <Route path='/events' component={EventDashboard} />
+              <Route exact path='/events' component={EventDashboard} />
               <Route path='/events/:id' component={EventDetails} />
               <Route path='/people' component={People} />
               <Route path='/profile/:id' component={Profile} />
