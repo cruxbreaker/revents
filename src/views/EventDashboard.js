@@ -19,6 +19,7 @@ function EventsDashboard({ events, createEvent, updateEvent, deleteEvent }) {
   // handle create event request
   const handleCreateEvent = (newEvent) => {
     newEvent.id = cuid();
+    newEvent.attendees = [];
     newEvent.hostPhotoURL = '/assets/user.png';
     createEvent(newEvent);
     setIsFormOpen(false);
