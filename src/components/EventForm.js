@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Segment, Form, Button } from 'semantic-ui-react';
+import cuid from 'cuid';
 
-const initialFormState = {
-  title: '',
-  date: '',
-  city: '',
-  venue: '',
-  hostedBy: '',
-};
+import { createEvent, updateEvent } from '../actions/eventActions';
 
-function EventForm({ createEvent, onCancel, updateEvent, selectedEvent }) {
-  const [state, setState] = useState(initialFormState);
+function EventForm({
+  event,
+  history,
+  createEvent,
+  updateEvent,
+  selectedEvent,
+}) {
+  const [state, setState] = useState(event);
 
   useEffect(() => {
     if (selectedEvent) setState({ ...selectedEvent });
@@ -25,10 +27,18 @@ function EventForm({ createEvent, onCancel, updateEvent, selectedEvent }) {
     e.preventDefault();
     if (state.id) {
       updateEvent(state);
+      history.push(`/events/${state.id}`);
     } else {
-      createEvent(state);
+      const newEvent = {
+        ...state,
+        id: cuid(),
+        attendees: [],
+        hostPhotoURL: '/assets/user.png',
+      };
+      createEvent(newEvent);
+      history.push(`/events/${newEvent.id}`);
     }
-    setState(initialFormState);
+    setState(event);
   };
 
   // destructure the state
@@ -86,7 +96,7 @@ function EventForm({ createEvent, onCancel, updateEvent, selectedEvent }) {
         <Button positive type='submit'>
           Submit
         </Button>
-        <Button type='button' onClick={onCancel}>
+        <Button type='button' onClick={history.goBack}>
           Cancel
         </Button>
       </Form>
@@ -94,4 +104,27 @@ function EventForm({ createEvent, onCancel, updateEvent, selectedEvent }) {
   );
 }
 
-export default EventForm;
+const mapStateToProps = (state, props) => {
+  const eventId = props.match.params.id;
+
+  let event = {
+    title: '',
+    date: '',
+    city: '',
+    venue: '',
+    hostedBy: '',
+  };
+
+  if (eventId && state.events.length > 0) {
+    event = state.events.filter((event) => event.id === eventId)[0];
+  }
+  console.log(props);
+  return { event };
+};
+
+const mapDispatchToProps = {
+  createEvent,
+  updateEvent,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventForm);

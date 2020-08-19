@@ -1,43 +1,12 @@
-import React, { useState } from 'react';
-import { Grid, Button } from 'semantic-ui-react';
-import cuid from 'cuid';
+import React from 'react';
+import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 import { createEvent, updateEvent, deleteEvent } from '../actions/eventActions';
 
 import EventList from '../components/EventList/EventList';
-import EventForm from '../components/EventForm';
 
 function EventsDashboard({ events, createEvent, updateEvent, deleteEvent }) {
-  const [isFormOpen, setIsFormOpen] = useState(false, 'isFormOpen');
-  const [selectedEvent, setSelectedEvent] = useState(null);
-
-  const toggleForm = () => {
-    setIsFormOpen(!isFormOpen);
-  };
-
-  // handle create event request
-  const handleCreateEvent = (newEvent) => {
-    newEvent.id = cuid();
-    newEvent.attendees = [];
-    newEvent.hostPhotoURL = '/assets/user.png';
-    createEvent(newEvent);
-    setIsFormOpen(false);
-  };
-
-  // handle select event
-  const handleSelectEvent = (event) => {
-    setSelectedEvent(event);
-    setIsFormOpen(true);
-  };
-
-  // handle update event
-  const handleUpdateEvent = (updatedEvent) => {
-    updateEvent(updatedEvent);
-    setIsFormOpen(false);
-    setSelectedEvent(null);
-  };
-
   // handle delete event
   const handleDeleteEvent = (id) => {
     deleteEvent(id);
@@ -46,23 +15,10 @@ function EventsDashboard({ events, createEvent, updateEvent, deleteEvent }) {
   return (
     <Grid>
       <Grid.Column width={10}>
-        <EventList
-          events={events}
-          selectEvent={handleSelectEvent}
-          deleteEvent={handleDeleteEvent}
-        />
+        <EventList events={events} deleteEvent={handleDeleteEvent} />
       </Grid.Column>
       <Grid.Column width={6}>
-        <Button onClick={toggleForm} positive content='Create Event' />
-        {isFormOpen && (
-          <EventForm
-            key={selectedEvent ? selectedEvent.id : 0}
-            onCancel={toggleForm}
-            createEvent={handleCreateEvent}
-            updateEvent={handleUpdateEvent}
-            selectedEvent={selectedEvent}
-          />
-        )}
+        <h2>Activity Feed</h2>
       </Grid.Column>
     </Grid>
   );

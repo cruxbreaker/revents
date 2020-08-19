@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import { Container } from 'semantic-ui-react';
-import { Route } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 import Home from './views/Home';
 import EventDashboard from './views/EventDashboard';
@@ -14,7 +14,7 @@ import Settings from './views/Settings';
 import Navbar from './components/Navbar/Navbar';
 import EventForm from './components/EventForm';
 
-function App() {
+function App({ location }) {
   return (
     <>
       <Route path='/' exact component={Home} />
@@ -24,12 +24,17 @@ function App() {
           <>
             <Navbar />
             <Container className='main'>
-              <Route exact path='/events' component={EventDashboard} />
-              <Route path='/events/:id' component={EventDetails} />
-              <Route path='/people' component={People} />
-              <Route path='/profile/:id' component={Profile} />
-              <Route path='/settings' component={Settings} />
-              <Route path='/createEvent' component={EventForm} />
+              <Switch key={location.key}>
+                <Route exact path='/events' component={EventDashboard} />
+                <Route path='/events/:id' component={EventDetails} />
+                <Route path='/people' component={People} />
+                <Route path='/profile/:id' component={Profile} />
+                <Route path='/settings' component={Settings} />
+                <Route
+                  path={['/createEvent', '/updateEvent/:id']}
+                  component={EventForm}
+                />
+              </Switch>
             </Container>
           </>
         )}
@@ -38,4 +43,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);
