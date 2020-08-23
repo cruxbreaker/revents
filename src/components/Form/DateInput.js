@@ -5,7 +5,7 @@ import format from 'date-fns/format';
 import 'react-datepicker/dist/react-datepicker.css';
 
 function DateInput({
-  input,
+  input: { value, onChange, onBlur },
   width,
   placeholder,
   meta: { touched, error },
@@ -16,9 +16,9 @@ function DateInput({
       <DatePicker
         {...rest}
         placeholderText={placeholder}
-        selected={input.value ? new Date(input.value) : null}
-        onChange={(date) => input.onChange(format(date, 'dd LLL yyyy h:mm a'))}
-        onBlur={input.onBlur}
+        selected={value ? new Date(value) : null}
+        onChange={(date) => onChange(format(date, 'dd LLL yyyy h:mm a'))}
+        onBlur={onBlur}
         onChangeRaw={(e) => e.preventDefault()}
       />
       {touched && error && (

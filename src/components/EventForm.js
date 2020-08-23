@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import {
@@ -15,6 +15,7 @@ import TextInput from './Form/TextInput';
 import TextArea from './Form/TextArea';
 import SelectInput from './Form/SelectInput';
 import DateInput from './Form/DateInput';
+import PlaceInput from './Form/PlaceInput';
 
 const category = [
   { key: 'drinks', text: 'Drinks', value: 'drinks' },
@@ -49,10 +50,26 @@ function EventForm({
   updateEvent,
   handleSubmit,
 }) {
-  // const [state, setState] = useState(event);
+  const [cityLatLng, setCityLatLng] = useState({});
+  const [venueLatLng, setVenueLatLng] = useState({});
+
+  const handleCitySelect = (selectedCity) => {
+    setCityLatLng({
+      lat: selectedCity.latlng[0],
+      lng: selectedCity.latlng[1],
+    });
+  };
+
+  const handleVenueSelect = (selectedCity) => {
+    setVenueLatLng({
+      lat: selectedCity.latlng[0],
+      lng: selectedCity.latlng[1],
+    });
+  };
 
   // handle form submit
   const onFormSubmit = (values) => {
+    values.venueLatLng = venueLatLng;
     if (initialValues.id) {
       updateEvent(values);
       history.push(`/events/${initialValues.id}`);
@@ -96,10 +113,17 @@ function EventForm({
               placeholder='Tell us about your event'
             />
             <Header sub color='teal' content='Event Location Details' />
-            <Field name='city' component={TextInput} placeholder='Event City' />
+            <Field
+              name='city'
+              component={PlaceInput}
+              onSelect={handleCitySelect}
+              placeholder='Event City'
+            />
             <Field
               name='venue'
-              component={TextInput}
+              component={PlaceInput}
+              proximity={cityLatLng}
+              onSelect={handleVenueSelect}
               placeholder='Event Venue'
             />
             <Field

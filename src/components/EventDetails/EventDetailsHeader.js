@@ -21,7 +21,7 @@ function EventDetailsHeader({ event }) {
     <Segment.Group>
       <Segment basic attached='top' style={{ padding: '0' }}>
         <Image
-          src={`/assets/categoryImages/${event.category}.jpg`}
+          src={`/assets/categoryImages/${event && event.category}.jpg`}
           fluid
           style={styles.eventImageStyle}
         />
@@ -32,12 +32,12 @@ function EventDetailsHeader({ event }) {
               <Item.Content>
                 <Header
                   size='huge'
-                  content={event.title}
+                  content={event && event.title}
                   style={{ color: 'white' }}
                 />
-                <p>{event.date}</p>
+                <p>{event && event.date}</p>
                 <p>
-                  Hosted by <strong>Hosted by</strong>
+                  Hosted by <strong>{event && event.hostedBy}</strong>
                 </p>
               </Item.Content>
             </Item>

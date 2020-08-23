@@ -10,7 +10,7 @@ function EventDetailsInfo({ event }) {
             <Icon size='large' color='teal' name='info' />
           </Grid.Column>
           <Grid.Column width={15}>
-            <p>{event.description}</p>
+            <p>{event && event.description}</p>
           </Grid.Column>
         </Grid>
       </Segment>
@@ -20,7 +20,7 @@ function EventDetailsInfo({ event }) {
             <Icon name='calendar' size='large' color='teal' />
           </Grid.Column>
           <Grid.Column width={15}>
-            <span>{event.date}</span>
+            <span>{event && event.date}</span>
           </Grid.Column>
         </Grid>
       </Segment>
@@ -30,7 +30,7 @@ function EventDetailsInfo({ event }) {
             <Icon name='marker' size='large' color='teal' />
           </Grid.Column>
           <Grid.Column width={11}>
-            <span>{event.venue}</span>
+            <span>{event && event.venue}</span>
           </Grid.Column>
           <Grid.Column width={4}>
             <Button color='teal' size='tiny' content='Show Map' />
